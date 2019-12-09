@@ -11,7 +11,7 @@
     <artifactId>vertx</artifactId>
 
     <properties>
-        <vertx.version>3.4.2</vertx.version>
+        <vertx.version>3.8.4</vertx.version>
         <main.class>io.vertx.core.Launcher</main.class>
         <main.verticle>io.example.MainVerticle</main.verticle>
     </properties>
