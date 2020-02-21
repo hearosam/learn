@@ -7,6 +7,8 @@
         <module>dubbo</module>
         <module>netty</module>
         <module>vertx</module>
+        <module>concurrent</module>
+        <module>mydisruptor</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
