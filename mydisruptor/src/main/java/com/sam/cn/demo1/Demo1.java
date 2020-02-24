@@ -7,6 +7,9 @@ import java.util.concurrent.*;
 
 /**
  * 使用disruptor原生api创建消费者和生产者
+ * 博文：https://blog.csdn.net/qian_348840260/article/details/38314825
+ * 博文2：https://www.cnblogs.com/haiq/p/4112689.html
+ * 博文3：https://blog.csdn.net/qian_348840260/article/details/38317743
  * @author sam.liang
  */
 public class Demo1 {
