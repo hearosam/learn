@@ -8,7 +8,6 @@ import java.util.concurrent.BlockingQueue;
  * @author sam.liang
  */
 public class CustomThreadPool {
-
     //线程池大小,默认值是10
     private static int pool_size = 10;
     //任务队列大小，默认值是20
