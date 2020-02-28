@@ -3,7 +3,6 @@ package com.sam.cn.myframework.test;
 import com.sam.cn.myframework.endity.ResultInfo;
 import com.sam.cn.myframework.endity.ResultType;
 import com.sam.cn.myframework.process.ITaskProcesser;
-
 import java.util.Random;
 
 /**
@@ -23,7 +22,6 @@ public class MyTask implements ITaskProcesser<Integer,Integer> {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         if (randomValue<300) {
             data = data.intValue() + randomValue;
             resultInfo = new ResultInfo<>(ResultType.SUCCESS,data);

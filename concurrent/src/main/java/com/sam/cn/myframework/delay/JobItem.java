@@ -26,7 +26,7 @@ public class JobItem implements Delayed {
     @Override
     public long getDelay(TimeUnit unit) {
         //纳秒转毫秒
-        return unit.convert((System.nanoTime() - expireTime),TimeUnit.NANOSECONDS);
+        return unit.convert((expireTime - System.nanoTime()),TimeUnit.NANOSECONDS);
     }
 
     /**

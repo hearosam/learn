@@ -1,7 +1,6 @@
 package com.sam.cn.myframework.delay;
 
 import com.sam.cn.myframework.PendingJobPool;
-
 import java.util.concurrent.DelayQueue;
 
 /**
@@ -10,13 +9,15 @@ import java.util.concurrent.DelayQueue;
  */
 public class CheckExpireJobProcess {
 
-    private static DelayQueue<JobItem> jobDelayQueue;
-
-    //过期缓存队列
-    public CheckExpireJobProcess(DelayQueue<JobItem> jobDelayQueue) {
-        this.jobDelayQueue = jobDelayQueue;
+    private CheckExpireJobProcess(){}
+    private static class CheckExpireJobProcessHolder {
+        public static CheckExpireJobProcess instance = new CheckExpireJobProcess();
     }
-
+    public static CheckExpireJobProcess getInstance() {
+        return CheckExpireJobProcessHolder.instance;
+    }
+    //过期缓存队列
+    private static DelayQueue<JobItem> jobDelayQueue = new DelayQueue<>();
     /**
      * 处理队列中过期的任务
      */
@@ -42,7 +43,7 @@ public class CheckExpireJobProcess {
      * @param jobName
      * @param expireTime
      */
-    public static void putJob(String jobName,long expireTime) {
+    public void putJob(String jobName,long expireTime) {
         JobItem item = new JobItem(jobName,expireTime);
         jobDelayQueue.offer(item);
         System.out.println("job["+jobName+"],已经放入过期检查缓存，过期时长："+expireTime);

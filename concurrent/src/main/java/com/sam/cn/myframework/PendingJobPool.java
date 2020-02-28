@@ -5,6 +5,7 @@ import com.sam.cn.myframework.endity.ResultInfo;
 import com.sam.cn.myframework.endity.ResultType;
 import com.sam.cn.myframework.process.ITaskProcesser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -15,8 +16,8 @@ import java.util.concurrent.*;
 public class PendingJobPool {
     //cpu 密集型 ? IO 密集型
     private static final int THREAD_NUMBERS = Runtime.getRuntime().availableProcessors();
-    //任务队列
-    private ArrayBlockingQueue<Runnable> taskQueue = new ArrayBlockingQueue<>(5000);
+    //任务队列(初始容量可以看情况调整)
+    private ArrayBlockingQueue<Runnable> taskQueue = new ArrayBlockingQueue<>(1000);
     //缓存工作上下文的容器
     private ConcurrentHashMap<String, JobContext> jobContextMap = new ConcurrentHashMap<>();
     //线程池
@@ -42,6 +43,7 @@ public class PendingJobPool {
 
         @Override
         public void run() {
+            R r = null;
             ResultInfo<R> resultInfo = null;
             try{
                 ITaskProcesser<R, T> processer = (ITaskProcesser<R, T>) jobContext.getProcesser();
@@ -49,17 +51,19 @@ public class PendingJobPool {
                 resultInfo = (ResultInfo<R>) processer.taskExecute(data);
                 //检查操作，任务处理器实现类处理完具体业务后必须返回系统返回类型
                 if (resultInfo == null) {
-                    resultInfo = new ResultInfo<R>(ResultType.EXCEPTION,"result is null");
+                    resultInfo = new ResultInfo<R>(ResultType.EXCEPTION,"result is null",r);
                 }else if (resultInfo.getResultType() == null) {//对处理结果进行友好提示处理
+                    r = resultInfo.getReturnData();
                     if(resultInfo.getReason() == null) {
-                        resultInfo = new ResultInfo<R>(ResultType.EXCEPTION,"reason is null");
+                        resultInfo = new ResultInfo<R>(ResultType.EXCEPTION,"reason is null",r);
                     }else {
-                        resultInfo = new ResultInfo<R>(ResultType.EXCEPTION,"result is not null ,but reason is " + resultInfo.getReason());
+                        resultInfo = new ResultInfo<R>(ResultType.EXCEPTION,"result is not null ,but reason is " + resultInfo.getReason(),r);
                     }
                 }
             }catch (Exception e) {
-                resultInfo = new ResultInfo<R>(ResultType.EXCEPTION,"exception  " + e.getMessage());
+                resultInfo = new ResultInfo<R>(ResultType.EXCEPTION,"exception  " + e.getMessage(),r);
             }finally {
+                System.out.println(resultInfo);
                 //任务处理完提交
                 jobContext.addTaskResult(resultInfo);
             }
@@ -75,11 +79,12 @@ public class PendingJobPool {
             throw new RuntimeException(jobName+ "<------当前作业已存在！");
         }
     }
-    //pendTask
     //提交任务
     //R返回结果类型，T业务数据
-    public <T,R> R submitTask(String jobName, T data) {
-        return null;
+    public <R,T> void submitTask(String jobName, T data) {
+        JobContext<R> job = getJob(jobName);
+        PendingTask<R,T> task = new PendingTask<R,T>(job,data);
+        executor.execute(task);
     }
 
     //R返回结果类型，T业务数据
@@ -94,11 +99,24 @@ public class PendingJobPool {
     public ConcurrentHashMap<String, JobContext> getJobContextMap() {
         return jobContextMap;
     }
+
     //查询任务详情，处理任务结果列表
     public<R> List<ResultInfo<R>> getTaskDetail(String jobName) {
-        JobContext<Object> myJobContext = getJob(jobName);
-        return myJobContext.getTaskDetail();
+        try{
+            JobContext<Object> myJobContext = getJob(jobName);
+            return myJobContext.getTaskDetail();
+        }catch (RuntimeException e) {
+            return new ArrayList<>();
+        }
     }
 
     //查询任务进度
+    public String getTotalProcess(String jobName) {
+        try{
+            JobContext<Object> myJobContext = getJob(jobName);
+            return myJobContext.getTotalProcess();
+        }catch (RuntimeException e) {
+            return "job :"+jobName+" 作业不存在或者作业已过期！！！";
+        }
+    }
 }

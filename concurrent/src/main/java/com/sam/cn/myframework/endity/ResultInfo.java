@@ -43,11 +43,20 @@ public class ResultInfo<R> {
         this.reason = reason;
     }
 
-    public R getData() {
+    public R getReturnData() {
         return returnData;
     }
 
-    public void setData(R returnData) {
+    public void setReturnData(R returnData) {
         this.returnData = returnData;
+    }
+
+    @Override
+    public String toString() {
+        return "ResultInfo{" +
+                "resultType=" + resultType +
+                ", reason='" + reason + '\'' +
+                ", returnData=" + returnData +
+                '}';
     }
 }

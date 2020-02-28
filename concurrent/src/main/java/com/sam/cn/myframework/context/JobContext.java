@@ -29,6 +29,8 @@ public class JobContext<R> {
     private ITaskProcesser<?,?> processer;
     //作业过期时间
     private long expireTime;
+    //作业过期缓存检查工具类
+    private static CheckExpireJobProcess instance = CheckExpireJobProcess.getInstance();
 
     public JobContext(String jobName,int taskNumbers,ITaskProcesser<?,?>  processer,long expireTime) {
         this.jobName = jobName;
@@ -57,8 +59,8 @@ public class JobContext<R> {
         //设置已经处理任务个数
         int processNums = processNumbers.incrementAndGet();
         //当前作业任务处理完之后，将作业名称放入延时队列，到期后自动清除框架缓存的这个作业数据
-        if (processNums == resultQueue.size()) {
-            CheckExpireJobProcess.putJob(this.jobName,this.expireTime);
+        if (taskNumbers == processNums) {
+            instance.putJob(this.jobName,this.expireTime);
         }
     }
 
@@ -70,7 +72,6 @@ public class JobContext<R> {
     public <R> List<ResultInfo<R>> getTaskDetail() {
         List<ResultInfo<R>> detailList = new ArrayList<>();
         ResultInfo<R> resultInfo;
-
         while((resultInfo= (ResultInfo<R>) resultQueue.pollFirst())!=null) {
             detailList.add(resultInfo);
         }
