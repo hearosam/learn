@@ -1,6 +1,6 @@
 package com.sam.cn.myframework.delay;
 
-import com.sam.cn.myframework.PendingJobPool;
+import com.sam.cn.myframework.core.PendingJobPool;
 import java.util.concurrent.DelayQueue;
 
 /**

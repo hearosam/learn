@@ -1,6 +1,6 @@
 package com.sam.cn.myframework.test;
 
-import com.sam.cn.myframework.PendingJobPool;
+import com.sam.cn.myframework.core.PendingJobPool;
 import com.sam.cn.myframework.endity.ResultInfo;
 import java.util.List;
 import java.util.Random;

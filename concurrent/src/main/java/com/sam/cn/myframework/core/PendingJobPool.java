@@ -1,4 +1,4 @@
-package com.sam.cn.myframework;
+package com.sam.cn.myframework.core;
 
 import com.sam.cn.myframework.context.JobContext;
 import com.sam.cn.myframework.endity.ResultInfo;
