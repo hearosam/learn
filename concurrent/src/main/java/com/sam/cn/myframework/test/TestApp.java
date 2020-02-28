@@ -41,6 +41,7 @@ public class TestApp {
         instance.registerJob(JOB_NAME,TASK_NUMBERS,new MyTask(),EXPIRE_TIME * 5);
         Random random = new Random();
         for (int i = 0; i < TASK_NUMBERS; i++) {
+            //这里直接将jobname跟业务数据提交给框架，框架后台会对这些数据进行封装
             instance.submitTask(JOB_NAME,random.nextInt(500));
         }
         //表示10秒钟后查询一次任务处理进度
