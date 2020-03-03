@@ -6,6 +6,10 @@ package com.sam.cn.myproject.common;
  */
 public class Constant {
     /**
+     * 缓存中对象数量：超过这个数量会使用LRU算法从缓存中清除过期对象
+     */
+    public static final int CACHE_SIZE = 200;
+    /**
      * 每篇文档80道题目
      */
     public static final int DOC_QUESTION_SIZE = 80;

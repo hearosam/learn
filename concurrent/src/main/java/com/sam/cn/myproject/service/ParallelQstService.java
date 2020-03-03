@@ -16,11 +16,11 @@ import java.util.concurrent.*;
  */
 public class ParallelQstService {
 
-    //已经处理题目的缓存 (使用google开源的ConcurrentHashMap),会自动清理最少使用的缓存数据
+    //已经处理题目的缓存 (使用google开源的ConcurrentHashMap),会基于LRU(最少使用算法)自动清理最少使用的缓存数据
     //这里容量可以根据测试然后得到一个合理值
     private static ConcurrentLinkedHashMap<Integer, QuestionInCache> questionCache = new ConcurrentLinkedHashMap
             .Builder<Integer,QuestionInCache>()
-            .maximumWeightedCapacity(200) //容量
+            .maximumWeightedCapacity(Constant.CACHE_SIZE) //容量
             .weigher(Weighers.singleton()) //单例
             .build();
     //正在处理题目的缓存  正在处理的题目是不能自动清理的
@@ -60,6 +60,7 @@ public class ParallelQstService {
                 QuestionInDB questionInDB = SQL_Question_Bank.getQuestionInDB(questionId);
                 QuestionTask task = new QuestionTask(questionInDB,questionId);
                 FutureTask<QuestionInCache> ft = new FutureTask<>(task);
+                //这里有点绕
                 questionInCacheFuture = processingQuestionCache.putIfAbsent(questionId,ft);
                 if(questionInCacheFuture == null) {
                     //现在缓存map中占位
