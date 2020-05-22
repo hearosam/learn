@@ -43,7 +43,7 @@ public class EchoServer {
     /**
      * netty echo 服务器启动
      */
-    public void start() throws InterruptedException {
+    private void start() throws InterruptedException {
         EchoServerHandler handler = new EchoServerHandler();
         /**
          * 如果 bossGroup 只用于绑定一个端口，那么 groupSize 设为1，因为只会使用到 bossGroup 中的一个 NioEventLoop，如果 groupSize>1，则其他多余的 NioEventLoop 只会白占内存

@@ -21,7 +21,7 @@ public class EchoClient {
      * 与被调服务的 NettyServer 进行通信，为了防止 NioEventLoop 太多，
      * 多个 NettyClient 可以共享一个 NioEventLoopGroup。
      */
-    final static EventLoopGroup group = new NioEventLoopGroup();
+    private final static EventLoopGroup group = new NioEventLoopGroup();
 
     private final String HOST;
 

@@ -9,6 +9,7 @@
         <module>vertx</module>
         <module>concurrent</module>
         <module>mydisruptor</module>
+        <module>network</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
