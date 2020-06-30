@@ -10,6 +10,9 @@
         <module>concurrent</module>
         <module>mydisruptor</module>
         <module>network</module>
+        <module>activemq</module>
+        <module>activemq-spring-producer</module>
+        <module>asyncRegister-activemq</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -64,15 +67,21 @@
             <artifactId>lombok</artifactId>
             <version>1.16.20</version>
         </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
-    <build>
+  <!--  <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
 </project>
