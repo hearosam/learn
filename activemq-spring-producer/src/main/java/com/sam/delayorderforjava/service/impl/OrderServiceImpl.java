@@ -4,6 +4,7 @@ import com.sam.delayorderforjava.entity.OrderEntity;
 import com.sam.delayorderforjava.service.IDelayOrder;
 import com.sam.delayorderforjava.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,8 +17,15 @@ public class OrderServiceImpl implements OrderService {
     private static final String PAY = "0";
     private static final String TIMEOUT = "2";
 
+    //java 自带的 delayQueue 实现 延时订单
     @Autowired
+    @Qualifier("delayOrderMqProducer")
     private IDelayOrder delayOrder;
+
+    //使用activeMQ实现延时订单 需要在activemq.xml配置文件添加上schedulerSupport="true"属性配置增加延迟和定时投递支持
+//    Autowired
+//    @Qualifier(value = "delayOrderMqProducer")
+//    private IDelayOrder delayOrder;
 
     @Override
     public void insertOrder() {

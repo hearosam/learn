@@ -4,7 +4,7 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 public class ItemVO<T> implements Delayed {
-    //到期时间，传递进来的是过期市场，单位毫秒，这里要将系统当前时间+市场=到期时间
+    //到期时间，传递进来的是过期时长，这里要将系统当前时间+时长=到期时间
     private long activeTime;
     private T data;//业务数据，泛型
 
